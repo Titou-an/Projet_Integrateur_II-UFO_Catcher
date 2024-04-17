@@ -136,27 +136,24 @@ void notify(){
 
       // claw_value = constrain(claw_value++,0,100);
       // claw_angle = map(claw_value, 0, 100, 75, 120);
-      claw_angle = 180;
-      servo.write(CLAW_SERVO, claw_angle);
+      claw_angle = 170;
 
     } else if (PS4.event.button_down.cross) {
-
       // claw_value = constrain(claw_value--,0,100);
       // claw_angle = map(claw_value, 0, 100, 75, 120);
       claw_angle = 75;
-      servo.write(CLAW_SERVO, claw_angle);
       
     }
+
     analogWrite(ENA, speed);
     analogWrite(ENB, speed);
-
   } else {
     stop();
   }
 }
 
 void loop() {
-  
+  servo.write(CLAW_SERVO, claw_angle,300.0,0.0);
 }
 
 void testSequence(){
@@ -229,13 +226,14 @@ void printDeviceAddress() {
 
 void onConnect() {
   Serial.println("Connected!");
+  servo.write(MAG_SERVO, 0);
+  servo.write(CLAW_SERVO, 75);
 }
 
 void onDisConnect() {
   Serial.println("Disconnected!");
-   for (int pos = 180; pos >= 0; pos--) {  // go from 180-0 degrees
-        servo.write(MAG_SERVO, pos);        // set the servo position (degrees)
-      }
+  servo.write(MAG_SERVO, 0);
+  servo.write(CLAW_SERVO, 180);
   stop();
 }
 
